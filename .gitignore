@@ -1,0 +1,27 @@
+*.*
+*
+!*/
+!Makefile
+!*.mk
+!*.scala
+!*.[cSh]
+!*.v
+!*.cpp
+!*.cc
+!.gitignore
+!.scalafmt.conf
+!*.md
+!openocd.cfg
+build/
+
+# mill
+!*.mill
+!.mill-version
+out/
+.bsp/
+.idea/
+.idea_modules/
+.bloop/
+.metals/
+.vscode/
+test_run_dir/
