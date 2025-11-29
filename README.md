@@ -29,6 +29,12 @@ Waiting for OpenOCD connection on port 9823...
 
 ### 2. 启动 OpenOCD
 
+先编译sw中的软件。
+
+```bash
+make -C sw
+```
+
 打开另一个终端窗口，运行 OpenOCD 连接到仿真器：
 
 ```bash

@@ -156,6 +156,7 @@ class IbexSystem(idcode: Int) extends Module {
   val err_slave_rvalid_data = RegNext(err_slave_gnt_data)
 
   // --- Ibex Instr Port ---
+  // Grant must be given in the same cycle as the request for Ibex
   ibex.io.instr_gnt_i := dm_slave_sel_instr || ram_sel_instr || err_slave_gnt_instr
   ibex.io.instr_rvalid_i := (dm_slave_resp_to_instr && dm_slave_rvalid) || (ram_resp_to_instr && ram_was_read) || err_slave_rvalid_instr
   ibex.io.instr_rdata_i := Mux(dm_slave_resp_to_instr, dm_slave_rdata, ram_rdata)
@@ -170,10 +171,14 @@ class IbexSystem(idcode: Int) extends Module {
   ibex.io.data_err_i := err_slave_rvalid_data
 
   // --- DM SBA Port ---
-  dm.io.master_gnt_i := ram_sel_sba
+  // SBA should always get grant when it requests (it has highest priority for RAM)
+  // But SBA can also access addresses outside RAM - need to handle that
+  val sba_addr_valid = sba_addr_in_ram  // For now, only RAM is valid for SBA
+  dm.io.master_gnt_i := sba_req && sba_addr_valid
   dm.io.master_r_valid_i := ram_resp_to_sba && (ram_was_read || ram_was_write)
   dm.io.master_r_rdata_i := ram_rdata
-  dm.io.master_r_err_i := false.B
+  // Return error if SBA accesses invalid address
+  dm.io.master_r_err_i := RegNext(sba_req && !sba_addr_valid)
   dm.io.master_r_other_err_i := false.B
 
 }

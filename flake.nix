@@ -22,6 +22,9 @@
             gnumake
             openocd
             inetutils
+            pkgsCross.riscv32-embedded.buildPackages.gcc
+            pkgsCross.riscv32-embedded.buildPackages.binutils
+            gdb  # 支持多架构，使用 "set arch riscv:rv32" 或 target remote 自动识别
           ];
 
           shellHook = ''
