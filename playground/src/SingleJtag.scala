@@ -100,14 +100,7 @@ class JtagTapController(irLength: Int, initialInstruction: Int) extends Module {
       // 明确地将最低两位设为 01，其余高位为 0
       instructionShiftReg := Cat(0.U((irLength - 2).W), "b01".U(2.W))
     } .elsewhen(state === ShiftIR) {
-      // 移位：TDI -> MSB ... LSB -> TDO
-      // 注意：通常是 LSB first 还是 MSB first?
-      // JTAG 标准是 LSB first (TDI -> LSB, MSB -> TDO)? 
-      // 不，通常是 TDI -> ShiftReg -> TDO。
-      // 如果是 LSB first，那么 TDI 移入 LSB 还是 MSB?
-      // 标准移位寄存器： TDI -> [0] ... [N] -> TDO
-      // 这样先移出的是 [N] (MSB)? 不，JTAG 是 LSB first out。
-      // 所以 TDI 应该移入 MSB，数据向右移，LSB 移出。
+      // TDI 应该移入 MSB，数据向右移，LSB 移出。
       instructionShiftReg := Cat(io.jtag.TDI, instructionShiftReg(irLength-1, 1))
     }
   }
