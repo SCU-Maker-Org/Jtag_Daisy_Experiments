@@ -2,6 +2,8 @@
 
 本项目实现了一个基于 Chisel 的双 Ibex RISC-V 核心 JTAG 菊花链设计，使用 PULP 的 riscv-dbg 作为调试模块，提供 Verilator 仿真环境和 OpenOCD 调试支持。
 
+> 如果更注重jtag的基本工作原理，请切换到only_TAP分支进行学习
+
 ## 文档
 
 - [调试指南](./docs/debugging_guide.md) - Telnet/GDB 调试详细说明
